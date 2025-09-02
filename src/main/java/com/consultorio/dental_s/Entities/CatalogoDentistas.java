@@ -64,6 +64,9 @@ public class CatalogoDentistas {
     @Column(name = "CIUDAD")
     private String ciudad;
 
+    @Column(name = "USERNAME")
+    private String username;
+
     @Column(name = "PASSWORD")
     private String password;
 

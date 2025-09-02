@@ -33,6 +33,7 @@ public class CatalogoDentistasDTO {
     private String codigoPostal;
     private String municipio;
     private String ciudad;
+    private String username;
     private String password;
     private CatalogoTipoSangre catalogoTipoSangre;
     private CatalogoEstadoCivil catalogoEstadoCivil;
