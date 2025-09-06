@@ -1,4 +1,4 @@
-package com.consultorio.dental_s.Services;
+package com.consultorio.dental_s.ServiceImpl;
 
 import com.consultorio.dental_s.Entities.CatalogoDentistas;
 import com.consultorio.dental_s.Repository.CatalogoDentistasRepository;
