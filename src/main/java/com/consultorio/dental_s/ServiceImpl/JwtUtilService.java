@@ -1,4 +1,4 @@
-package com.consultorio.dental_s.Services;
+package com.consultorio.dental_s.ServiceImpl;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

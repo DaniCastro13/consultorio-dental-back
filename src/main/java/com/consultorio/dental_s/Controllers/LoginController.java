@@ -1,7 +1,7 @@
 package com.consultorio.dental_s.Controllers;
 
 import com.consultorio.dental_s.Models.LoginRequest;
-import com.consultorio.dental_s.Services.JwtUtilService;
+import com.consultorio.dental_s.ServiceImpl.JwtUtilService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
