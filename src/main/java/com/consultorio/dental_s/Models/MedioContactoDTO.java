@@ -14,5 +14,5 @@ public class MedioContactoDTO {
     private Long idMedioContacto;
     private String valor;
     private Boolean activo;
-    private List<CatalogoMedioContactoDTO> catalogoMedioContacto;
+    private CatalogoMedioContactoDTO catalogoMedioContacto;
 }
