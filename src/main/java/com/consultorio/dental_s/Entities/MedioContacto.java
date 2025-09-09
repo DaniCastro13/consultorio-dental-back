@@ -36,7 +36,7 @@ public class MedioContacto {
     @Column(name = "FECHA_ACTUALIZACION")
     private LocalDateTime fechaActualizacion;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "ID_CAT_MEDIO_CONTACTO")
-    private List<CatalogoMedioContacto> catalogoMedioContacto;
+    private CatalogoMedioContacto catalogoMedioContacto;
 }

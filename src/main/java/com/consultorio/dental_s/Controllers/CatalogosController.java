@@ -1,20 +1,25 @@
 package com.consultorio.dental_s.Controllers;
 
 import com.consultorio.dental_s.Entities.CatalogoEstadoCivil;
+import com.consultorio.dental_s.Entities.CatalogoMedioContacto;
 import com.consultorio.dental_s.Entities.CatalogoSexo;
 import com.consultorio.dental_s.Entities.CatalogoTipoSangre;
 import com.consultorio.dental_s.Exceptions.CatalagoTipoSangreException;
 import com.consultorio.dental_s.Exceptions.CatalogoEstadoCivilException;
+import com.consultorio.dental_s.Exceptions.CatalogoMedioContactoException;
 import com.consultorio.dental_s.Exceptions.CatalogoSexoException;
 import com.consultorio.dental_s.Mappers.CatalogoEstadoCivilMapper;
+import com.consultorio.dental_s.Mappers.CatalogoMedioContactoMapper;
 import com.consultorio.dental_s.Mappers.CatalogoSexoMapper;
 import com.consultorio.dental_s.Mappers.CatalogoTipoSangreMapper;
 import com.consultorio.dental_s.Models.CatalogoEstadoCivilDTO;
+import com.consultorio.dental_s.Models.CatalogoMedioContactoDTO;
 import com.consultorio.dental_s.Models.CatalogoSexoDTO;
 import com.consultorio.dental_s.Models.CatalogoTipoSangreDTO;
 import com.consultorio.dental_s.ServiceImpl.CatalogoEstadoCivilServiceImpl;
 import com.consultorio.dental_s.ServiceImpl.CatalogoSexoServiceImpl;
 import com.consultorio.dental_s.ServiceImpl.CatalogoTipoSangreServiceImpl;
+import com.consultorio.dental_s.Services.CatalogoMedioContactoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,6 +52,12 @@ public class CatalogosController {
 
     @Autowired
     private CatalogoSexoMapper catalogoSexoMapper;
+
+    @Autowired
+    private CatalogoMedioContactoService catalogoMedioContactoService;
+
+    @Autowired
+    private CatalogoMedioContactoMapper catalogoMedioContactoMapper;
 
     @PostMapping("/save/catalogo-sexo")
     public ResponseEntity<?> saveCatalogoSexo(@RequestBody CatalogoSexoDTO catalogoSexoDTO) {
@@ -309,5 +320,61 @@ public class CatalogosController {
             log.error("Error al eliminar el estado civil {} ", ex.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
+    }
+
+    @PostMapping("/saveMedioContacto")
+    public ResponseEntity<?> saveMedioContacto(@RequestBody CatalogoMedioContactoDTO catalogoMedioContactoDTO) throws CatalagoTipoSangreException {
+        Map<String, Object> body = new HashMap<>();
+        log.info("Iniciando controlador ---saveMedioContacto---");
+        log.info("CatalogoMedioContactoDTO: {}", catalogoMedioContactoDTO);
+        CatalogoMedioContacto saveMedio = catalogoMedioContactoService.saveMedioContacto(catalogoMedioContactoMapper.toCatalogoMedioContactoEntity(catalogoMedioContactoDTO));
+        if(saveMedio!=null){
+            body.put("message", "Medio Contacto Creado con Exito");
+            body.put("medioContatco", catalogoMedioContactoDTO);
+            body.put("status", HttpStatus.CREATED);
+            body.put("error", false);
+            return ResponseEntity.status(HttpStatus.CREATED).body(body);
+        }
+        throw new CatalogoMedioContactoException("No se pudo almacenar el medio contacto");
+    }
+
+    @GetMapping("/getAllMediosContactos")
+    public List<CatalogoMedioContacto> getAllMediosContactos() {
+        return catalogoMedioContactoService.findAllMedioContacto();
+    }
+
+    @PutMapping("/updateMedioContacto/{id}")
+    public ResponseEntity<?> updateMedioContacto(@PathVariable Long id, @RequestBody CatalogoMedioContactoDTO catalogoMedioContactoDTO) throws CatalagoTipoSangreException {
+        log.info("Iniciando controlador ---updateMedioContacto---");
+        Map<String, Object> body = new HashMap<>();
+        if(id == null) {
+            throw new CatalogoMedioContactoException("El id es un campo obligatorio");
+        }
+        CatalogoMedioContacto updateMedioContact = catalogoMedioContactoService.updatemMedioContacto(id, catalogoMedioContactoMapper.toCatalogoMedioContactoEntity(catalogoMedioContactoDTO));
+        if(updateMedioContact!=null){
+            body.put("message", "Medio Contacto actualizado con exito");
+            body.put("medioContatco", catalogoMedioContactoDTO);
+            body.put("status", HttpStatus.OK);
+            body.put("error", false);
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        }
+        body.put("message", "Estado civil no actualizado");
+        body.put("status", HttpStatus.BAD_REQUEST);
+        body.put("error", true);
+        return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    @DeleteMapping("/deleteMedioContacto/{id}")
+    public ResponseEntity<?> deleteMedioContacto(@PathVariable Long id) throws CatalagoTipoSangreException {
+        log.info("Iniciando controlador ---deleteMedioContacto---");
+        Map<String, Object> body = new HashMap<>();
+        if(id == null) {
+            throw new CatalogoMedioContactoException("El id no puede ser nulo");
+        }
+        this.catalogoMedioContactoService.deleteMedioContacto(id);
+        body.put("message", "Medio Contacto eliminado con Exito");
+        body.put("status", HttpStatus.OK);
+        body.put("error", false);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 }
