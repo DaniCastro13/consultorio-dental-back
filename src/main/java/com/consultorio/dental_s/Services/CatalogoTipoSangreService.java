@@ -11,9 +11,7 @@ public interface CatalogoTipoSangreService {
 
     List<CatalogoTipoSangre> findAllCatalogoTipoSangre();
 
-    Optional<CatalogoTipoSangre> findCatalogoTipoSangreById(Long idTipoSangre);
-
-    Optional<CatalogoTipoSangre> updateCatalogoTipoSangre(Long idTipoSangre, CatalogoTipoSangre catalogoTipoSangre);
+    CatalogoTipoSangre updateCatalogoTipoSangre(Long idTipoSangre, CatalogoTipoSangre catalogoTipoSangre);
 
     void deleteCatalogoTipoSangre(Long idTipoSangre);
 }

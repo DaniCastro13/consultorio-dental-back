@@ -255,4 +255,59 @@ public class CatalogosController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
         }
     }
+
+    @GetMapping("/getAllCatalogoTipoSangre")
+    public List<CatalogoEstadoCivil> getAllCatalogoTipoSangre() {
+        try {
+            log.info("GETALL TIPO SANGRE: Iniciando Controlador");
+            return this.catalogoEstadoCivilServiceImpl.getCatalogoEstadoCivil();
+        } catch (Exception e) {
+            log.info("GETALL TIPO SANGRE: {}", e.getMessage());
+            return List.of();
+        }
+    }
+
+    @PutMapping("/updateEstadoCivil/{id}")
+    public ResponseEntity<?> updateEstadoCivil(@PathVariable Long id, @RequestBody CatalogoTipoSangreDTO catalogoTipoSangreDTO) {
+        try {
+            Map<String, Object> body = new HashMap<>();
+            log.info("INICIANDO EL CONTROLADOR PARA ACTUALIZAR EL ESTADO CIVIL");
+            CatalogoTipoSangre saveCatalogo = catalogoTipoSangreService.updateCatalogoTipoSangre(id, catalogoTipoSangreMapper.toCatalogoTipoSangreEntity(catalogoTipoSangreDTO));
+            if(saveCatalogo!=null){
+                body.put("message", "Catalogo Actualizado con Exito");
+                body.put("status", HttpStatus.OK);
+                body.put("error", false);
+                return ResponseEntity.status(HttpStatus.OK).body(body);
+            }
+            body.put("message", "Estado civil no actualizado");
+            body.put("status", HttpStatus.BAD_REQUEST.value());
+            body.put("error", true);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+        } catch (CatalagoTipoSangreException exception) {
+            log.error("Error al consumir el controlador del updateEstadoCivil");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
+        }
+    }
+
+    @DeleteMapping("/deleteEstadoCivil/{id}")
+    public ResponseEntity<?> deleteCatalogoTipoSangre(@PathVariable Long id) {
+        try {
+            Map<String, Object> body = new HashMap<>();
+            log.info("Iniciando el controlador para eliminar el estado civil");
+            if(id == null) {
+                body.put("message", "El id es un campo obligatorio");
+                body.put("status", HttpStatus.BAD_REQUEST);
+                body.put("error", true);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+            }
+            log.info("El estado civil se elimino exitosamente");
+            body.put("message", "El estado civil se eliminado");
+            body.put("status", HttpStatus.OK);
+            body.put("error", false);
+            return ResponseEntity.status(HttpStatus.OK).body(body);
+        } catch (CatalagoTipoSangreException ex) {
+            log.error("Error al eliminar el estado civil {} ", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+        }
+    }
 }
