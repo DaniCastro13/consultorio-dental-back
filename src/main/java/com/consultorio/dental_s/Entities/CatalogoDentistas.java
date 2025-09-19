@@ -72,7 +72,7 @@ public class CatalogoDentistas {
 
     @OneToOne
     @JoinColumn(name = "ID_SEXO")
-    private CatalogoTipoSangre catalogoSangre;
+    private CatalogoSexo catalogoSexo;
 
     @OneToOne
     @JoinColumn(name = "ID_ESTADO_CIVIL")

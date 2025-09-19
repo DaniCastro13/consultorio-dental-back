@@ -13,4 +13,5 @@ public interface CatalogoDentistasRepository extends JpaRepository<CatalogoDenti
 
     @Query("SELECT c FROM CatalogoDentistas c WHERE c.username=:username")
     Optional<CatalogoDentistas> findByUsername(@Param("username") String username);
+
 }

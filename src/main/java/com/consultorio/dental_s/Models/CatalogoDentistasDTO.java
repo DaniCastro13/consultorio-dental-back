@@ -2,6 +2,7 @@ package com.consultorio.dental_s.Models;
 
 import com.consultorio.dental_s.Entities.CatalogoEstadoCivil;
 import com.consultorio.dental_s.Entities.CatalogoRoles;
+import com.consultorio.dental_s.Entities.CatalogoSexo;
 import com.consultorio.dental_s.Entities.CatalogoTipoSangre;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
@@ -35,7 +36,8 @@ public class CatalogoDentistasDTO {
     private String ciudad;
     private String username;
     private String password;
-    private CatalogoTipoSangre catalogoTipoSangre;
+    private CatalogoSexoDTO catalogoSexo;
+    private CatalogoTipoSangreDTO catalogoTipoSangre;
     private CatalogoEstadoCivil catalogoEstadoCivil;
     private CatalogoRoles catalogoRoles;
 }
