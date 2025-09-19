@@ -1,24 +1,16 @@
 package com.consultorio.dental_s.Controllers;
 
-import com.consultorio.dental_s.Entities.CatalogoEstadoCivil;
-import com.consultorio.dental_s.Entities.CatalogoMedioContacto;
-import com.consultorio.dental_s.Entities.CatalogoSexo;
-import com.consultorio.dental_s.Entities.CatalogoTipoSangre;
+import com.consultorio.dental_s.Entities.*;
 import com.consultorio.dental_s.Exceptions.CatalagoTipoSangreException;
 import com.consultorio.dental_s.Exceptions.CatalogoEstadoCivilException;
 import com.consultorio.dental_s.Exceptions.CatalogoMedioContactoException;
 import com.consultorio.dental_s.Exceptions.CatalogoSexoException;
-import com.consultorio.dental_s.Mappers.CatalogoEstadoCivilMapper;
-import com.consultorio.dental_s.Mappers.CatalogoMedioContactoMapper;
-import com.consultorio.dental_s.Mappers.CatalogoSexoMapper;
-import com.consultorio.dental_s.Mappers.CatalogoTipoSangreMapper;
-import com.consultorio.dental_s.Models.CatalogoEstadoCivilDTO;
-import com.consultorio.dental_s.Models.CatalogoMedioContactoDTO;
-import com.consultorio.dental_s.Models.CatalogoSexoDTO;
-import com.consultorio.dental_s.Models.CatalogoTipoSangreDTO;
+import com.consultorio.dental_s.Mappers.*;
+import com.consultorio.dental_s.Models.*;
 import com.consultorio.dental_s.ServiceImpl.CatalogoEstadoCivilServiceImpl;
 import com.consultorio.dental_s.ServiceImpl.CatalogoSexoServiceImpl;
 import com.consultorio.dental_s.ServiceImpl.CatalogoTipoSangreServiceImpl;
+import com.consultorio.dental_s.Services.CatalogoDentistasService;
 import com.consultorio.dental_s.Services.CatalogoMedioContactoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +50,12 @@ public class CatalogosController {
 
     @Autowired
     private CatalogoMedioContactoMapper catalogoMedioContactoMapper;
+
+    @Autowired
+    private CatalogoDentistasService catalogoDentistasService;
+
+    @Autowired
+    private CatalogoDentistasMapper catalogoDentistasMapper;
 
     @PostMapping("/save/catalogo-sexo")
     public ResponseEntity<?> saveCatalogoSexo(@RequestBody CatalogoSexoDTO catalogoSexoDTO) {
@@ -376,5 +374,21 @@ public class CatalogosController {
         body.put("status", HttpStatus.OK);
         body.put("error", false);
         return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @PostMapping("/saveDentista")
+    public ResponseEntity<?> saveDentista(@RequestBody CatalogoDentistasDTO catalogoDentistasDTO) throws CatalagoTipoSangreException {
+        log.info("Iniciando controlador ---saveDentista---");
+        log.info("REQUEST RECIBIDO: {}", catalogoDentistasDTO);
+        Map<String, Object> body = new HashMap<>();
+        CatalogoDentistas saveDentista = catalogoDentistasService.saveDetista(catalogoDentistasMapper.toCatalogoDentistasEntity(catalogoDentistasDTO));
+        if(saveDentista != null) {
+            body.put("message", "Dentista Creado con exito");
+            body.put("dentista", catalogoDentistasDTO);
+            body.put("status", HttpStatus.CREATED.value());
+            body.put("error", false);
+            return ResponseEntity.status(HttpStatus.CREATED).body(body);
+        }
+        throw new CatalogoMedioContactoException("No se pudo almacenar el dentista");
     }
 }
