@@ -38,6 +38,6 @@ public class CatalogoDentistasDTO {
     private String password;
     private CatalogoSexoDTO catalogoSexo;
     private CatalogoTipoSangreDTO catalogoTipoSangre;
-    private CatalogoEstadoCivil catalogoEstadoCivil;
-    private CatalogoRoles catalogoRoles;
+    private CatalogoEstadoCivilDTO catalogoEstadoCivil;
+    private CatalogoRolesDTO catalogoRoles;
 }
