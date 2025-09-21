@@ -70,19 +70,19 @@ public class CatalogoDentistas {
     @Column(name = "PASSWORD")
     private String password;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ID_SEXO")
     private CatalogoSexo catalogoSexo;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ID_ESTADO_CIVIL")
     private CatalogoEstadoCivil catalogoEstadoCivil;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ID_TIPO_SANGRE")
     private CatalogoTipoSangre catalogoTipoSangre;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ID_ROL")
     private CatalogoRoles catalogoRoles;
 }

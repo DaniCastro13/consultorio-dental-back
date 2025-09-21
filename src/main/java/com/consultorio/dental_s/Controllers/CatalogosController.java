@@ -1,10 +1,7 @@
 package com.consultorio.dental_s.Controllers;
 
 import com.consultorio.dental_s.Entities.*;
-import com.consultorio.dental_s.Exceptions.CatalagoTipoSangreException;
-import com.consultorio.dental_s.Exceptions.CatalogoEstadoCivilException;
-import com.consultorio.dental_s.Exceptions.CatalogoMedioContactoException;
-import com.consultorio.dental_s.Exceptions.CatalogoSexoException;
+import com.consultorio.dental_s.Exceptions.*;
 import com.consultorio.dental_s.Mappers.*;
 import com.consultorio.dental_s.Models.*;
 import com.consultorio.dental_s.ServiceImpl.CatalogoEstadoCivilServiceImpl;
@@ -12,8 +9,10 @@ import com.consultorio.dental_s.ServiceImpl.CatalogoSexoServiceImpl;
 import com.consultorio.dental_s.ServiceImpl.CatalogoTipoSangreServiceImpl;
 import com.consultorio.dental_s.Services.CatalogoDentistasService;
 import com.consultorio.dental_s.Services.CatalogoMedioContactoService;
+import com.consultorio.dental_s.Services.CatalogoRolesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +55,12 @@ public class CatalogosController {
 
     @Autowired
     private CatalogoDentistasMapper catalogoDentistasMapper;
+
+    @Autowired
+    private CatalogoRolesService catalogoRolesService;
+
+    @Autowired
+    private CatalogoRolesMapper catalogoRolesMapper;
 
     @PostMapping("/save/catalogo-sexo")
     public ResponseEntity<?> saveCatalogoSexo(@RequestBody CatalogoSexoDTO catalogoSexoDTO) {
@@ -149,7 +154,7 @@ public class CatalogosController {
                 return listCatalogoEstadoCivil;
             }
             return List.of();
-        } catch (CatalagoTipoSangreException exception){
+        } catch (CatalogoEstadoCivilException exception){
             log.error("--- ERROR AL CONSUMIR getAllCatalgosEstadoCivil");
             log.error(exception.getMessage());
             return List.of();
@@ -376,8 +381,106 @@ public class CatalogosController {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
+    @GetMapping("/findAllRoles")
+    public List<CatalogoRoles> getAllRoles() {
+        try {
+            List<CatalogoRoles> listRoles = catalogoRolesService.findAllRoles();
+            if(!listRoles.isEmpty()) {
+                log.info("Obtuve la siguiente lista {}", listRoles);
+                return listRoles;
+            }
+            log.info("No obtuve ninguna lista");
+            return listRoles;
+        } catch (Exception ex) {
+            log.error("Error al consumir el controlador de findAllRoles {}", ex.getMessage());
+            return List.of();
+        }
+    }
+
+    @PostMapping("/save/rol")
+    public ResponseEntity<?> saveRol(@RequestBody CatalogoRolesDTO catalogoRolesDTO) {
+        try {
+            log.info("Iniciando el controlador para guardar el rol");
+            log.info("REQUEST RECIBIDO: {}", catalogoRolesDTO);
+            Map<String, Object> response = new HashMap<>();
+            CatalogoRoles saveRol = catalogoRolesService.saveRol(catalogoRolesMapper.toCatalogoRolesEntity(catalogoRolesDTO));
+            if(saveRol != null) {
+                response.put("rol", catalogoRolesDTO);
+                response.put("message", "Rol almacenado con exito");
+                response.put("error", false);
+                response.put("status", HttpStatus.CREATED.value());
+                return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            }
+            response.put("message", "No se pudo almacenar el rol");
+            response.put("error", true);
+            response.put("status", HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception ex) {
+            log.error("No se pudo consumir el controlador de saveRol {}", ex.getMessage());
+            Map<String, Object> body = new HashMap<>();
+            body.put("message", "Error al guardar rol");
+            body.put("description", ex.getMessage());
+            body.put("error", true);
+            body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+        }
+    }
+
+    @PutMapping("/updateRol/{id}")
+    public ResponseEntity<?> updateRolById(@PathVariable Long id, @RequestBody CatalogoRolesDTO rolesDTO) {
+        try {
+            Map<String, Object> response = new HashMap<>();
+            log.info("Iniciando el controlador de actualizar el rol");
+            log.info("REQUEST recibida: {}", rolesDTO);
+            CatalogoRoles rolUpdate = catalogoRolesService.updateRolById(id, catalogoRolesMapper.toCatalogoRolesEntity(rolesDTO));
+            if(rolUpdate != null) {
+                log.info("Rol actualizado con exito");
+                response.put("message", "Rol actualizado con exito");
+                response.put("rol", rolesDTO);
+                response.put("error", false);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
+            response.put("message", "No se pudo actualizar el rol");
+            response.put("error", true);
+            response.put("status", HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception ex) {
+            Map<String, Object> body = new HashMap<>();
+            log.error("Error al actualizar el rol");
+            log.info("Error description {}", ex.getMessage());
+            body.put("message", "Error al consumir el controlador de actualizar el rol");
+            body.put("descripcion", ex.getMessage());
+            body.put("error", true);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+        }
+    }
+
+    @DeleteMapping("/deleteRol/{id}")
+    public ResponseEntity<?> deleteRolById(@PathVariable Long id) {
+        try {
+            Map<String, Object> response = new HashMap<>();
+            boolean isDeleted = catalogoRolesService.deleteRolById(id);
+            if(isDeleted) {
+                response.put("message", "El rol se elimino con exito");
+                response.put("error", false);
+                response.put("status", HttpStatus.OK.value());
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
+            response.put("message", "No se pudo eliminar el rol");
+            response.put("error", true);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            Map<String, Object> body = new HashMap<>();
+            body.put("message", "Error al consumir el servicio de eliminar el rol");
+            body.put("description", e.getMessage());
+            body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+        }
+    }
+
+    //TODO: FALTA IMPLEMENTAR LAS DEMAS PETICIONES
     @PostMapping("/saveDentista")
-    public ResponseEntity<?> saveDentista(@RequestBody CatalogoDentistasDTO catalogoDentistasDTO) throws CatalagoTipoSangreException {
+    public ResponseEntity<?> saveDentista(@RequestBody CatalogoDentistasDTO catalogoDentistasDTO) throws CatalogoDentistasException {
         log.info("Iniciando controlador ---saveDentista---");
         log.info("REQUEST RECIBIDO: {}", catalogoDentistasDTO);
         Map<String, Object> body = new HashMap<>();
@@ -389,6 +492,6 @@ public class CatalogosController {
             body.put("error", false);
             return ResponseEntity.status(HttpStatus.CREATED).body(body);
         }
-        throw new CatalogoMedioContactoException("No se pudo almacenar el dentista");
+        throw new CatalogoDentistasException("No se pudo almacenar el dentista");
     }
 }
