@@ -68,7 +68,7 @@ public class CatalogosController {
             Map<String, Object> body = new HashMap<>();
             log.info("--- INICIANDO CONTROLADOR SAVECATALOGO ---");
             CatalogoSexo saveCatalogoSexo = catalogoSexoServiceImpl.saveCatalogoSexo(catalogoSexoMapper.toCatalogoSexoEntity(catalogoSexoDTO));
-            if(saveCatalogoSexo != null) {
+            if (saveCatalogoSexo != null) {
                 body.put("message", "Catalogo Sexo almacenado exitosamente");
                 body.put("catalog", catalogoSexoDTO);
                 body.put("error", false);
@@ -80,7 +80,7 @@ public class CatalogosController {
             body.put("error", true);
             body.put("status", HttpStatus.BAD_REQUEST);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
-        } catch(CatalogoSexoException catalogoSexoException) {
+        } catch (CatalogoSexoException catalogoSexoException) {
             log.error("--- ERROR EN EL CONTROLADOR DE CATALOGO DE SEXO ---");
             log.error(catalogoSexoException.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(catalogoSexoException);
@@ -90,8 +90,8 @@ public class CatalogosController {
     @GetMapping("/getAllCatalogoSexo")
     public List<CatalogoSexo> getAllCatalogoSexo() {
         try {
-          log.info("--- INICIANDO CONTROLADOR PARA OBTENER LOS CATALOGOS SEXO ---");
-          return catalogoSexoServiceImpl.getAllCatalogoSexo();
+            log.info("--- INICIANDO CONTROLADOR PARA OBTENER LOS CATALOGOS SEXO ---");
+            return catalogoSexoServiceImpl.getAllCatalogoSexo();
         } catch (CatalogoSexoException catalogoSexoException) {
             log.error("ERROR AL CONSUMIR EL CONTROLADOR ");
             return List.of();
@@ -104,7 +104,7 @@ public class CatalogosController {
             Map<String, Object> body = new HashMap<>();
             log.info("--- CATALOGO SEXO: updateCatalogo ---: {}", catalogoSexoDTO);
             CatalogoSexo catSexo = catalogoSexoServiceImpl.updateCatalogoSexoById(id, catalogoSexoMapper.toCatalogoSexoEntity(catalogoSexoDTO));
-            if(catSexo != null) {
+            if (catSexo != null) {
                 body.put("message", "Catalogo Sexo actualizado exitosamente");
                 body.put("catalog", catalogoSexoDTO);
                 body.put("error", false);
@@ -126,7 +126,7 @@ public class CatalogosController {
     public ResponseEntity<?> deleteCatalogoSexo(@PathVariable Long id) {
         try {
             Map<String, Object> body = new HashMap<>();
-            if(id == null) {
+            if (id == null) {
                 body.put("message", "El id del catalogo no puede ser nulo");
                 body.put("error", true);
                 body.put("status", HttpStatus.BAD_REQUEST);
@@ -145,16 +145,16 @@ public class CatalogosController {
     }
 
     @GetMapping("/getAllCatalogosEstadoCivil")
-    public List<CatalogoEstadoCivil> getAllCatalogosEstadoCivil(){
+    public List<CatalogoEstadoCivil> getAllCatalogosEstadoCivil() {
         try {
             log.info("--- INICIANDO EL CONTROLADOR getAllCatalogoEstadoCivil ---");
             log.info("--- INICIANDO CONSUMO DEL SERVICIO ---");
             List<CatalogoEstadoCivil> listCatalogoEstadoCivil = catalogoEstadoCivilServiceImpl.getCatalogoEstadoCivil();
-            if(!listCatalogoEstadoCivil.isEmpty()){
+            if (!listCatalogoEstadoCivil.isEmpty()) {
                 return listCatalogoEstadoCivil;
             }
             return List.of();
-        } catch (CatalogoEstadoCivilException exception){
+        } catch (CatalogoEstadoCivilException exception) {
             log.error("--- ERROR AL CONSUMIR getAllCatalgosEstadoCivil");
             log.error(exception.getMessage());
             return List.of();
@@ -170,12 +170,12 @@ public class CatalogosController {
             CatalogoEstadoCivil catalogoEstadoCivilConvert = catalogoEstadoCivilMapper.toCatalogoEstadoCivilEntity(catalogoEstadoCivilDTO);
             log.info("--- EL DTO SE HA CONVERTIDO EN ENTIDAD ---");
             CatalogoEstadoCivil saveCatalogo = catalogoEstadoCivilServiceImpl.saveCatalogoEstadoCivil(catalogoEstadoCivilConvert);
-            if( saveCatalogo != null ) {
-               body.put("message", "Catalogo Estado Civil Almacenado con exito");
-               body.put("catalogo", saveCatalogo);
-               body.put("status", HttpStatus.CREATED);
-               body.put("error", false);
-               return ResponseEntity.status(HttpStatus.CREATED).body(body);
+            if (saveCatalogo != null) {
+                body.put("message", "Catalogo Estado Civil Almacenado con exito");
+                body.put("catalogo", saveCatalogo);
+                body.put("status", HttpStatus.CREATED);
+                body.put("error", false);
+                return ResponseEntity.status(HttpStatus.CREATED).body(body);
             }
             body.put("message", "No se creo el catalogo estado civil");
             body.put("status", HttpStatus.BAD_REQUEST);
@@ -195,10 +195,10 @@ public class CatalogosController {
     public ResponseEntity<?> updateCatalogoEstadoCivil(@PathVariable Long id, @RequestBody CatalogoEstadoCivilDTO catalogoEstadoCivilDTO) {
         try {
             Map<String, Object> body = new HashMap<>();
-            log.info("REQUEST RECIBIDIO {} : ID {}: ", catalogoEstadoCivilDTO , id);
+            log.info("REQUEST RECIBIDIO {} : ID {}: ", catalogoEstadoCivilDTO, id);
             CatalogoEstadoCivil convertEntity = catalogoEstadoCivilMapper.toCatalogoEstadoCivilEntity(catalogoEstadoCivilDTO);
             CatalogoEstadoCivil save = catalogoEstadoCivilServiceImpl.updateCatalogoEstadoCivilById(id, convertEntity);
-            if( save != null ) {
+            if (save != null) {
                 body.put("message", "Catalogo Estado Civil Actualizado con exito");
                 body.put("catalogo", save);
                 body.put("status", HttpStatus.OK);
@@ -224,7 +224,7 @@ public class CatalogosController {
         try {
             Map<String, Object> body = new HashMap<>();
             log.info(" --- INICIANDO LA ELIMINACION DEL CATALOGO ESTADO CIVIL ---");
-            if(id == null) {
+            if (id == null) {
                 body.put("message", "El id es un campo obligatorio");
                 body.put("error", true);
                 body.put("status", HttpStatus.BAD_REQUEST);
@@ -252,7 +252,7 @@ public class CatalogosController {
             log.info("Request: {}", catalogoTipoSangreDTO);
             CatalogoTipoSangre convertedEntity = catalogoTipoSangreMapper.toCatalogoTipoSangreEntity(catalogoTipoSangreDTO);
             CatalogoTipoSangre savedEntity = catalogoTipoSangreService.saveCatalogoTipoSangre(convertedEntity);
-            if(savedEntity!=null){
+            if (savedEntity != null) {
                 Map<String, Object> body = new HashMap<>();
                 body.put("message", "Tipo de sangre creado exitosamente");
                 body.put("request", savedEntity);
@@ -287,7 +287,7 @@ public class CatalogosController {
             Map<String, Object> body = new HashMap<>();
             log.info("INICIANDO EL CONTROLADOR PARA ACTUALIZAR EL ESTADO CIVIL");
             CatalogoTipoSangre saveCatalogo = catalogoTipoSangreService.updateCatalogoTipoSangre(id, catalogoTipoSangreMapper.toCatalogoTipoSangreEntity(catalogoTipoSangreDTO));
-            if(saveCatalogo!=null){
+            if (saveCatalogo != null) {
                 body.put("message", "Catalogo Actualizado con Exito");
                 body.put("status", HttpStatus.OK);
                 body.put("error", false);
@@ -308,7 +308,7 @@ public class CatalogosController {
         try {
             Map<String, Object> body = new HashMap<>();
             log.info("Iniciando el controlador para eliminar el estado civil");
-            if(id == null) {
+            if (id == null) {
                 body.put("message", "El id es un campo obligatorio");
                 body.put("status", HttpStatus.BAD_REQUEST);
                 body.put("error", true);
@@ -331,7 +331,7 @@ public class CatalogosController {
         log.info("Iniciando controlador ---saveMedioContacto---");
         log.info("CatalogoMedioContactoDTO: {}", catalogoMedioContactoDTO);
         CatalogoMedioContacto saveMedio = catalogoMedioContactoService.saveMedioContacto(catalogoMedioContactoMapper.toCatalogoMedioContactoEntity(catalogoMedioContactoDTO));
-        if(saveMedio!=null){
+        if (saveMedio != null) {
             body.put("message", "Medio Contacto Creado con Exito");
             body.put("medioContatco", catalogoMedioContactoDTO);
             body.put("status", HttpStatus.CREATED);
@@ -350,11 +350,11 @@ public class CatalogosController {
     public ResponseEntity<?> updateMedioContacto(@PathVariable Long id, @RequestBody CatalogoMedioContactoDTO catalogoMedioContactoDTO) throws CatalagoTipoSangreException {
         log.info("Iniciando controlador ---updateMedioContacto---");
         Map<String, Object> body = new HashMap<>();
-        if(id == null) {
+        if (id == null) {
             throw new CatalogoMedioContactoException("El id es un campo obligatorio");
         }
         CatalogoMedioContacto updateMedioContact = catalogoMedioContactoService.updatemMedioContacto(id, catalogoMedioContactoMapper.toCatalogoMedioContactoEntity(catalogoMedioContactoDTO));
-        if(updateMedioContact!=null){
+        if (updateMedioContact != null) {
             body.put("message", "Medio Contacto actualizado con exito");
             body.put("medioContatco", catalogoMedioContactoDTO);
             body.put("status", HttpStatus.OK);
@@ -364,14 +364,14 @@ public class CatalogosController {
         body.put("message", "Estado civil no actualizado");
         body.put("status", HttpStatus.BAD_REQUEST);
         body.put("error", true);
-        return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
     @DeleteMapping("/deleteMedioContacto/{id}")
     public ResponseEntity<?> deleteMedioContacto(@PathVariable Long id) throws CatalagoTipoSangreException {
         log.info("Iniciando controlador ---deleteMedioContacto---");
         Map<String, Object> body = new HashMap<>();
-        if(id == null) {
+        if (id == null) {
             throw new CatalogoMedioContactoException("El id no puede ser nulo");
         }
         this.catalogoMedioContactoService.deleteMedioContacto(id);
@@ -385,7 +385,7 @@ public class CatalogosController {
     public List<CatalogoRoles> getAllRoles() {
         try {
             List<CatalogoRoles> listRoles = catalogoRolesService.findAllRoles();
-            if(!listRoles.isEmpty()) {
+            if (!listRoles.isEmpty()) {
                 log.info("Obtuve la siguiente lista {}", listRoles);
                 return listRoles;
             }
@@ -404,7 +404,7 @@ public class CatalogosController {
             log.info("REQUEST RECIBIDO: {}", catalogoRolesDTO);
             Map<String, Object> response = new HashMap<>();
             CatalogoRoles saveRol = catalogoRolesService.saveRol(catalogoRolesMapper.toCatalogoRolesEntity(catalogoRolesDTO));
-            if(saveRol != null) {
+            if (saveRol != null) {
                 response.put("rol", catalogoRolesDTO);
                 response.put("message", "Rol almacenado con exito");
                 response.put("error", false);
@@ -433,7 +433,7 @@ public class CatalogosController {
             log.info("Iniciando el controlador de actualizar el rol");
             log.info("REQUEST recibida: {}", rolesDTO);
             CatalogoRoles rolUpdate = catalogoRolesService.updateRolById(id, catalogoRolesMapper.toCatalogoRolesEntity(rolesDTO));
-            if(rolUpdate != null) {
+            if (rolUpdate != null) {
                 log.info("Rol actualizado con exito");
                 response.put("message", "Rol actualizado con exito");
                 response.put("rol", rolesDTO);
@@ -460,7 +460,7 @@ public class CatalogosController {
         try {
             Map<String, Object> response = new HashMap<>();
             boolean isDeleted = catalogoRolesService.deleteRolById(id);
-            if(isDeleted) {
+            if (isDeleted) {
                 response.put("message", "El rol se elimino con exito");
                 response.put("error", false);
                 response.put("status", HttpStatus.OK.value());
@@ -478,14 +478,24 @@ public class CatalogosController {
         }
     }
 
-    //TODO: FALTA IMPLEMENTAR LAS DEMAS PETICIONES
+    @GetMapping("/findAllDentistas")
+    public List<CatalogoDentistas> findAllDentistas() {
+        try {
+            return catalogoDentistasService.findAllDentistas();
+        } catch (Exception e) {
+            log.error("Error al consumir el controlador de findAllDentistas {}", e.getMessage());
+            return List.of();
+        }
+    }
+
+
     @PostMapping("/saveDentista")
     public ResponseEntity<?> saveDentista(@RequestBody CatalogoDentistasDTO catalogoDentistasDTO) throws CatalogoDentistasException {
         log.info("Iniciando controlador ---saveDentista---");
         log.info("REQUEST RECIBIDO: {}", catalogoDentistasDTO);
         Map<String, Object> body = new HashMap<>();
         CatalogoDentistas saveDentista = catalogoDentistasService.saveDetista(catalogoDentistasMapper.toCatalogoDentistasEntity(catalogoDentistasDTO));
-        if(saveDentista != null) {
+        if (saveDentista != null) {
             body.put("message", "Dentista Creado con exito");
             body.put("dentista", catalogoDentistasDTO);
             body.put("status", HttpStatus.CREATED.value());
@@ -493,5 +503,59 @@ public class CatalogosController {
             return ResponseEntity.status(HttpStatus.CREATED).body(body);
         }
         throw new CatalogoDentistasException("No se pudo almacenar el dentista");
+    }
+
+    @PutMapping("/updateDentista/{id}")
+    public ResponseEntity<?> updateDentista(@PathVariable Long id, @RequestBody CatalogoDentistasDTO catalogoDentistasDTO) {
+        Map<String, Object> body = new HashMap<>();
+        try {
+            log.info("Iniciando controlador ---updateDentista---");
+            log.info("REQUEST recibida: {}", catalogoDentistasDTO);
+            CatalogoDentistas updateDentista = catalogoDentistasService.updateDentista(id, catalogoDentistasMapper.toCatalogoDentistasEntity(catalogoDentistasDTO));
+            if (updateDentista != null) {
+                body.put("message", "Dentista actualizado con exito");
+                body.put("dentista", catalogoDentistasDTO);
+                body.put("status", HttpStatus.OK.value());
+                body.put("error", false);
+                return ResponseEntity.status(HttpStatus.OK).body(body);
+            }
+            body.put("message", "No se pudo actualizar el dentista");
+            body.put("status", HttpStatus.BAD_REQUEST.value());
+            body.put("error", true);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+        } catch (Exception e) {
+            log.error("Error al consumir el controlador de updateDentista {}", e.getMessage());
+            body.put("message", "Error al consumir el controlador de actualizar el dentista");
+            body.put("description", e.getMessage());
+            body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            body.put("error", true);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+        }
+    }
+
+    @DeleteMapping("/deleteDentista/{id}")
+    public ResponseEntity<?> deleteDentista(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            boolean dentistaDeleted = catalogoDentistasService.deleteDentista(id);
+            if (dentistaDeleted) {
+                response.put("message", "El dentista se elimino con exito");
+                response.put("error", false);
+                response.put("status", HttpStatus.OK.value());
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } else {
+                response.put("message", "No se pudo eliminar el dentista");
+                response.put("error", true);
+                response.put("status", HttpStatus.BAD_REQUEST.value());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+        } catch (Exception e) {
+            log.error("Error al consumir el controlador de deleteDentista {}", e.getMessage());
+            response.put("message", "Error al consumir el servicio de eliminar el dentista");
+            response.put("description", e.getMessage());
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("error", true);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 }

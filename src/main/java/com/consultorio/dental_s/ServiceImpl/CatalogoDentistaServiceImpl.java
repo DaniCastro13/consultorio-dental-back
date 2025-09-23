@@ -39,16 +39,67 @@ public class CatalogoDentistaServiceImpl implements CatalogoDentistasService {
 
     @Override
     public List<CatalogoDentistas> findAllDentistas() {
-        return List.of();
+        try {
+            log.info("Iniciando el servicio para obtener todos los dentistas");
+            List<CatalogoDentistas> listAllDentistas = catalogoDentistasRepository.findAll();
+            if (!listAllDentistas.isEmpty()) {
+                log.info("Lista de dentistas obtenida {}", listAllDentistas);
+                return listAllDentistas;
+            }
+            log.info("Lista de dentistas obtenida no encontrada");
+            return List.of();
+        } catch (Exception e) {
+            log.error("Error al obtener los dentistas: " + e.getMessage());
+            return List.of();
+        }
     }
 
     @Override
     public CatalogoDentistas updateDentista(Long id, CatalogoDentistas dentista) {
-        return null;
+        if(id == null) {
+            log.info("El id no puede venir nulo");
+            return null;
+        }
+        return catalogoDentistasRepository.findById(id).map((dentist) -> {
+            dentist.setNombreDentista(dentista.getNombreDentista());
+            dentist.setApellidoPaterno(dentista.getApellidoPaterno());
+            dentist.setApellidoMaterno(dentista.getApellidoMaterno());
+            dentist.setCurp(dentista.getCurp());
+            dentist.setCorreoElectronico(dentista.getCorreoElectronico());
+            dentist.setFechaNacimiento(dentista.getFechaNacimiento());
+            dentist.setEdad(dentista.getEdad());
+            dentist.setCedulaProfesional(dentista.getCedulaProfesional());
+            dentist.setCalle(dentista.getCalle());
+            dentist.setNumeroExterior(dentista.getNumeroExterior());
+            dentist.setNumeroInterior(dentista.getNumeroInterior());
+            dentist.setColonia(dentista.getColonia());
+            dentist.setCodigoPostal(dentista.getCodigoPostal());
+            dentist.setMunicipio(dentista.getMunicipio());
+            dentist.setCiudad(dentista.getCiudad());
+            dentist.setUsername(dentista.getUsername());
+            dentist.setCatalogoSexo(dentista.getCatalogoSexo());
+            dentist.setCatalogoTipoSangre(dentista.getCatalogoTipoSangre());
+            dentist.setCatalogoEstadoCivil(dentista.getCatalogoEstadoCivil());
+            dentist.setCatalogoRoles(dentista.getCatalogoRoles());
+            return catalogoDentistasRepository.save(dentist);
+        }).orElseThrow(() -> {
+            log.info("No se encontro el dentista con id: {}", id);
+            return null;
+        });
     }
 
     @Override
     public boolean deleteDentista(Long id) {
-        return false;
+        if(id == null) {
+            log.info("El id no puede venir nulo");
+            return false;
+        }
+        return catalogoDentistasRepository.findById(id).map((dentist) -> {
+            catalogoDentistasRepository.deleteById(id);
+            return true;
+        }).orElseThrow(() -> {
+            log.info("No se encontro el dentista con id: {}", id);
+            return null;
+        });
     }
 }
