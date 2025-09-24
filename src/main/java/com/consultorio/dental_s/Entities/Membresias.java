@@ -35,7 +35,7 @@ public class Membresias {
     @JoinColumn(name = "ID_DENTISTA")
     private CatalogoDentistas dentista;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "ID_PROMOCION")
-    private List<CatalogoPromociones> listaPromociones;
+    private CatalogoPromociones promocion;
 }
