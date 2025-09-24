@@ -7,10 +7,7 @@ import com.consultorio.dental_s.Models.*;
 import com.consultorio.dental_s.ServiceImpl.CatalogoEstadoCivilServiceImpl;
 import com.consultorio.dental_s.ServiceImpl.CatalogoSexoServiceImpl;
 import com.consultorio.dental_s.ServiceImpl.CatalogoTipoSangreServiceImpl;
-import com.consultorio.dental_s.Services.CatalogoDentistasService;
-import com.consultorio.dental_s.Services.CatalogoMedioContactoService;
-import com.consultorio.dental_s.Services.CatalogoPromocionesService;
-import com.consultorio.dental_s.Services.CatalogoRolesService;
+import com.consultorio.dental_s.Services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -68,6 +65,12 @@ public class CatalogosController {
 
     @Autowired
     private CatalogoPromocionesMapper catalogoPromocionesMapper;
+
+    @Autowired
+    private CatalogoConceptosService catalogoConceptosService;
+
+    @Autowired
+    private CatalogoConceptosMapper catalogoConceptosMapper;
 
     @PostMapping("/save/catalogo-sexo")
     public ResponseEntity<?> saveCatalogoSexo(@RequestBody CatalogoSexoDTO catalogoSexoDTO) {
@@ -659,5 +662,96 @@ public class CatalogosController {
         }
     }
 
+    @PostMapping("/gastos/saveGasto")
+    public ResponseEntity<?> saveGasto(@RequestBody CatalogoConceptosDTO catalogoConceptosDTO) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            log.info("Iniciando controlador ---saveGasto---");
+            log.info("REQUEST CatalogoConceptosDTO: {}", catalogoConceptosDTO);
+            CatalogoConceptos saveCatalogo = catalogoConceptosService.saveConcepto(catalogoConceptosMapper.toCatalogoConceptosEntity(catalogoConceptosDTO));
+            if (saveCatalogo != null) {
+                response.put("message", "Gasto almacenado con exito");
+                response.put("data", catalogoConceptosDTO);
+                response.put("status", HttpStatus.CREATED.value());
+                response.put("error", false);
+                return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            }
+            response.put("message", "No se almaceno el gasto");
+            response.put("status", HttpStatus.BAD_REQUEST.value());
+            response.put("error", true);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            log.error("Error al actualizar el promocion {}", e.getMessage());
+            response.put("message", "Error al actualizar el promocion");
+            response.put("description", e.getMessage());
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("error", true);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/gastos/getAllGastos")
+    public List<CatalogoConceptos> getAllGastos() {
+        try {
+            List<CatalogoConceptos> listGastos = catalogoConceptosService.getCatalogoConceptos();
+            log.info("Lista de Gastos: {}", listGastos);
+            return listGastos;
+        } catch (Exception e) {
+            log.error("Error al actualizar el promocion {}", e.getMessage());
+            return List.of();
+        }
+    }
+
+    @PutMapping("/gastos/updateGasto/{id}")
+    public ResponseEntity<?> updateGastoById(@PathVariable Long id, @RequestBody CatalogoConceptosDTO catalogoConceptosDTO) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            log.info("Iniciando controlador ---updateGastoById---");
+            CatalogoConceptos updateGasto = catalogoConceptosService.updateConceptoById(id, catalogoConceptosMapper.toCatalogoConceptosEntity(catalogoConceptosDTO));
+            if (updateGasto != null) {
+                response.put("message", "Gasto actualizado con exito");
+                response.put("data", catalogoConceptosDTO);
+                response.put("status", HttpStatus.OK.value());
+                response.put("error", false);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
+            response.put("message", "No se actualizo el gasto");
+            response.put("status", HttpStatus.BAD_REQUEST.value());
+            response.put("error", true);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            log.error("Error al actualizar el promocion {}", e.getMessage());
+            response.put("message", "Error al actualizar el promocion");
+            response.put("description", e.getMessage());
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("error", true);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @DeleteMapping("/gastos/deleteGasto/{id}")
+    public ResponseEntity<?> deleteGastoById(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            boolean deleteGasto = catalogoConceptosService.deleteConceptoById(id);
+            if (deleteGasto) {
+                response.put("message", "Gasto eliminado con exito");
+                response.put("status", HttpStatus.OK.value());
+                response.put("error", false);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
+            response.put("message", "El gasto ya no existe en el sistema");
+            response.put("status", HttpStatus.BAD_REQUEST.value());
+            response.put("error", true);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            log.error("Error al actualizar el promocion {}", e.getMessage());
+            response.put("message", "Error al actualizar el promocion");
+            response.put("description", e.getMessage());
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("error", true);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
 }

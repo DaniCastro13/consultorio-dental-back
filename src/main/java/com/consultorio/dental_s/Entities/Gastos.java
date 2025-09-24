@@ -28,9 +28,9 @@ public class Gastos {
     @Column(name = "IMPORTE")
     private Double importe;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "ID_CAT_GASTO")
-    private List<CatalogoConceptos> catalogoConceptos;
+    private CatalogoConceptos catalogoConceptos;
 
     @Column(name = "JUSTIFICACION_GASTO")
     private String justificacionGasto;
