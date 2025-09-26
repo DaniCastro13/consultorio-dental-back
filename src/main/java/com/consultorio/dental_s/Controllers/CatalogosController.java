@@ -72,6 +72,12 @@ public class CatalogosController {
     @Autowired
     private CatalogoConceptosMapper catalogoConceptosMapper;
 
+    @Autowired
+    private CatalogoOpcionesHallazgoService catalogoOpcionesHallazgoService;
+
+    @Autowired
+    private CatalogoOpcionesHallazgosMapper catalogoOpcionesHallazgosMapper;
+
     @PostMapping("/save/catalogo-sexo")
     public ResponseEntity<?> saveCatalogoSexo(@RequestBody CatalogoSexoDTO catalogoSexoDTO) {
         try {
@@ -748,6 +754,96 @@ public class CatalogosController {
             log.error("Error al actualizar el promocion {}", e.getMessage());
             response.put("message", "Error al actualizar el promocion");
             response.put("description", e.getMessage());
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("error", true);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/hallazgos/getAllHallazgos")
+    public List<CatalogoOpcionesHallazgos> getAllHallazgos() {
+        try {
+            log.info("Iniciando controlador ---getAllHallazgos");
+            return catalogoOpcionesHallazgoService.findAllOpcionesHallazgos();
+        } catch (Exception e) {
+            log.error("Error al actualizar el promocion {}", e.getMessage());
+            return List.of();
+        }
+    }
+
+    @PostMapping("/hallazgos/saveHallazgo")
+    public ResponseEntity<?> saveHallazgo(@RequestBody CatalogoOpcionesHallazgosDTO catalogoHallazgoDTO) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            log.info("Iniciando controlador ---saveHallazgo");
+            log.info("REQUEST: CatalogoHallazgoDTO: {}", catalogoHallazgoDTO);
+            CatalogoOpcionesHallazgos hallazgo = catalogoOpcionesHallazgoService.saveOpcionHallazgo(catalogoOpcionesHallazgosMapper.toCatalogoOpcionesHallazgosEntity(catalogoHallazgoDTO));
+            if(hallazgo != null) {
+                response.put("message", "Hallazgo actualizado con exito");
+                response.put("status", HttpStatus.OK.value());
+                response.put("error", false);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
+            response.put("message", "El hallazgo ya existe en el sistema");
+            response.put("status", HttpStatus.BAD_REQUEST.value());
+            response.put("error", true);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            response.put("message", "Error al almacenar el promocion");
+            response.put("description", e.getMessage());
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("error", true);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PutMapping("/hallazgos/updateHallazgo/{id}")
+    public ResponseEntity<?> updateHallazgo(@PathVariable Long id, @RequestBody CatalogoOpcionesHallazgosDTO catalogoHallazgosDTO) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            log.info("Iniciando controlador ---updateHallazgo");
+            log.info("REQUEST: ID: {} CatalogoHallazgoDTO: {}",id, catalogoHallazgosDTO);
+            CatalogoOpcionesHallazgos hallazgoUpdate = catalogoOpcionesHallazgoService.updateOpcionHallazgo(id, catalogoOpcionesHallazgosMapper.toCatalogoOpcionesHallazgosEntity(catalogoHallazgosDTO));
+            if(hallazgoUpdate != null) {
+                response.put("message", "Hallazgo actualizado con exito");
+                response.put("status", HttpStatus.OK.value());
+                response.put("error", false);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
+            response.put("message", "No se actualizo el promocion");
+            response.put("status", HttpStatus.BAD_REQUEST.value());
+            response.put("error", true);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            log.error("Error al actualizar el promocion {}", e.getMessage());
+            response.put("message", "Error al actualizar el promocion");
+            response.put("description", e.getMessage());
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("error", true);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @DeleteMapping("/hallazgos/deleteHallazgo/{id}")
+    public ResponseEntity<?> deleteHallazgo(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            log.info("Iniciando controlador ---deleteHallazgo");
+            log.info("REQUEST: ID: {}", id);
+            boolean deleteHallazgo = catalogoOpcionesHallazgoService.deleteOpcionHallazgo(id);
+            if(deleteHallazgo) {
+                response.put("message", "Hallazgo eliminado con exito");
+                response.put("status", HttpStatus.OK.value());
+                response.put("error", false);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
+            response.put("message", "El hallazgo ya no existe en el sistema");
+            response.put("status", HttpStatus.BAD_REQUEST.value());
+            response.put("error", true);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            log.info("Error al actualizar el promocion {}", e.getMessage());
+            response.put("message", "Error al actualizar el promocion");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.put("error", true);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
