@@ -1,12 +1,18 @@
 package com.consultorio.dental_s.Entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "CAT_OPCIONES_HALLAZGOS")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CatalogoOpcionesHallazgos {
 
     @Id
