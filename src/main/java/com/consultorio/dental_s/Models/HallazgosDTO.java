@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class HallazgosDTO {
 
     private Long idHallazgo;
+    private String clave;
     private String descripcion;
     private String observaciones;
     private String rutaImagen;
