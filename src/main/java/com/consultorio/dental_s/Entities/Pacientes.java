@@ -38,6 +38,9 @@ public class Pacientes {
     @Column(name = "TELEFONO")
     private String telefono;
 
+    @Column(name = "CURP")
+    private String curp;
+
     @Column(name = "CLIENTE_ACTIVO")
     private Boolean clienteActivo;
 
@@ -49,19 +52,19 @@ public class Pacientes {
     @Column(name = "FECHA_ACTUALIZACION")
     private LocalDateTime fechaActualizacion;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ID_MEMBRESIA")
     private Membresias membresia;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ID_SEXO")
     private CatalogoSexo catalogoSexo;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ID_ESTADO_CIVIL")
     private CatalogoEstadoCivil catalogoEstadoCivil;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ID_TIPO_SANGRE")
     private CatalogoTipoSangre catalogoTipoSangre;
 
