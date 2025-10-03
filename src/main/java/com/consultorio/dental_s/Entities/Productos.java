@@ -65,4 +65,8 @@ public class Productos {
 
     @Column(name = "PROMOCION_APLICADA")
     private String promocionAplicada;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_PRODUCTOS_CATEGORIA")
+    private ProductosCategoria productoCategoria;
 }
