@@ -29,4 +29,5 @@ public class ProductosDTO {
     private Double precioVenta;
     private Double precioEspecial;
     private String promocionAplicada;
+    private ProductosCategoriaDTO categoria;
 }
