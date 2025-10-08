@@ -17,7 +17,6 @@ public class PacientesServiceImpl implements PacientesService {
     @Autowired
     private PacientesRepository pacientesRepository;
 
-
     @Override
     public Pacientes savePaciente(Pacientes paciente) {
         try {
@@ -25,7 +24,7 @@ public class PacientesServiceImpl implements PacientesService {
             log.info("REQUEST: {}", paciente);
             Optional<Pacientes> existCurp = pacientesRepository.findByCurp(paciente.getCurp());
             if (existCurp.isPresent()) {
-                log.info("Paciente ya existe con la CURP: {}", paciente.getCurp());
+                log.info("Paciente con la curp ya existente");
                 return null;
             }
             log.info("El paciente no existe, procediendo a guardarlo");
@@ -71,7 +70,6 @@ public class PacientesServiceImpl implements PacientesService {
             pacient.setCatalogoSexo(paciente.getCatalogoSexo());
             pacient.setCatalogoEstadoCivil(paciente.getCatalogoEstadoCivil());
             pacient.setCatalogoTipoSangre(paciente.getCatalogoTipoSangre());
-            pacient.setAuxiliars(paciente.getAuxiliars());
             return pacientesRepository.save(pacient);
         }).orElseThrow(()-> {
             log.info("No se encontró el paciente con ID: {}", id);

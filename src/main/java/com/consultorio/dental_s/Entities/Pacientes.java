@@ -68,6 +68,4 @@ public class Pacientes {
     @JoinColumn(name = "ID_TIPO_SANGRE")
     private CatalogoTipoSangre catalogoTipoSangre;
 
-    @ManyToMany(mappedBy = "pacientes")
-    private List<Auxiliar> auxiliars;
 }
