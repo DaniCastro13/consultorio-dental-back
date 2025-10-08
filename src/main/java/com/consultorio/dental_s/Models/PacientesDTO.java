@@ -1,9 +1,6 @@
 package com.consultorio.dental_s.Models;
 
-import com.consultorio.dental_s.Entities.CatalogoEstadoCivil;
-import com.consultorio.dental_s.Entities.CatalogoSexo;
-import com.consultorio.dental_s.Entities.CatalogoTipoSangre;
-import com.consultorio.dental_s.Entities.Membresias;
+import com.consultorio.dental_s.Entities.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -14,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -26,6 +24,7 @@ public class PacientesDTO {
     private String apellidoMaterno;
     private String direccion;
     private String telefono;
+    private String curp;
     private Boolean clienteActivo;
     private LocalDateTime fechaAlta;
     private LocalDateTime fechaActualizacion;

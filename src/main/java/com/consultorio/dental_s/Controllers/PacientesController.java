@@ -47,7 +47,7 @@ public class PacientesController {
             if(pacienteSave != null) {
                 log.info("Se inicia el almacenado del paciente");
                 response.put("message","Paciente guardado con exito");
-                response.put("data", pacientesDTO);
+                response.put("data", pacienteSave);
                 response.put("error", false);
                 return ResponseEntity.status(HttpStatus.CREATED).body(response);
             }
@@ -74,7 +74,7 @@ public class PacientesController {
             if(pacienteUpdate != null) {
                 log.info("Se inicia el almacenado del paciente");
                 response.put("message","Paciente actualizado con exito");
-                response.put("data", pacientesDTO);
+                response.put("data", pacienteUpdate);
                 response.put("error", false);
                 return ResponseEntity.status(HttpStatus.OK).body(response);
             }
