@@ -58,7 +58,7 @@ public class HallazgosServiceImpl implements HallazgosService {
                 hallazgoUpdate.setDescripcion(hallazgo.getDescripcion());
                 hallazgoUpdate.setObservaciones(hallazgo.getObservaciones());
                 hallazgoUpdate.setRutaImagen(hallazgo.getRutaImagen());
-                hallazgoUpdate.setOpcionHallazgo(hallazgo.getOpcionHallazgo());
+                hallazgoUpdate.setCatalogoOpcionesHallazgos(hallazgo.getCatalogoOpcionesHallazgos());
                 hallazgoUpdate.setConsultas(hallazgo.getConsultas());
                 return hallazgosRepository.save(hallazgoUpdate);
             }).orElseThrow(() -> {

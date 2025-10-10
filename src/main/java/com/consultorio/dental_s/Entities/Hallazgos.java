@@ -33,7 +33,7 @@ public class Hallazgos {
 
     @ManyToOne
     @JoinColumn(name = "ID_OPCION_HALLAZGO")
-    private CatalogoOpcionesHallazgos opcionHallazgo;
+    private CatalogoOpcionesHallazgos catalogoOpcionesHallazgos;
 
     @ManyToMany(mappedBy = "hallazgos")
     private List<Consultas> consultas;
