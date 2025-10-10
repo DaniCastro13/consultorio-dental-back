@@ -29,7 +29,7 @@ public class PacientesDTO {
     private LocalDateTime fechaAlta;
     private LocalDateTime fechaActualizacion;
     private Membresias membresia;
-    private CatalogoSexo catalogoSexo;
-    private CatalogoEstadoCivil catalogoEstadoCivil;
-    private CatalogoTipoSangre catalogoTipoSangre;
+    private CatalogoSexoDTO catalogoSexo;
+    private CatalogoEstadoCivilDTO catalogoEstadoCivil;
+    private CatalogoTipoSangreDTO catalogoTipoSangre;
 }
