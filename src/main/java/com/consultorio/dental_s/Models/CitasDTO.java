@@ -19,6 +19,6 @@ public class CitasDTO {
     private Date horaCita;
     private String observaciones;
     private Boolean asistencia;
-    private CatalogoDentistas dentista;
-    private Pacientes paciente;
+    private CatalogoDentistasDTO dentista;
+    private PacientesDTO paciente;
 }

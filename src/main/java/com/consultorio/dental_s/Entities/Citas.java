@@ -1,6 +1,7 @@
 package com.consultorio.dental_s.Entities;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "P_CITAS")
+@Data
 public class Citas {
 
     @Id
@@ -15,24 +17,24 @@ public class Citas {
     @Column(name = "ID_CITA")
     private Long idCita;
 
-    @Column(name = "FECHA_CITA", nullable = false)
+    @Column(name = "FECHA_CITA")
     private LocalDateTime fechaCita;
 
-    @Column(name = "HORA_CITA", nullable = false)
+    @Column(name = "HORA_CITA")
     private Date horaCita;
 
     @Column(name = "OBSERVACIONES")
     private String observaciones;
 
-    @Column(name = "ASISTENCIA", nullable = false)
+    @Column(name = "ASISTENCIA")
     private Boolean asistencia;
 
     @ManyToOne
-    @JoinColumn(name = "ID_DENTISTA", nullable = false)
+    @JoinColumn(name = "ID_DENTISTA")
     private CatalogoDentistas dentista;
 
     @ManyToOne
-    @JoinColumn(name = "ID_PACIENTE", nullable = false)
+    @JoinColumn(name = "ID_PACIENTE")
     private Pacientes paciente;
 
     @CreationTimestamp
