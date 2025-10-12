@@ -15,7 +15,7 @@ public class GastosDTO {
     private Long idGasto;
     private String fechaGasto;
     private Double importe;
-    private CatalogoConceptos catalogoConceptos;
     private String justificacionGasto;
     private String observaciones;
+    private CatalogoConceptos catalogoConceptos;
 }
