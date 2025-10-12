@@ -677,7 +677,7 @@ public class CatalogosController {
             CatalogoConceptos saveCatalogo = catalogoConceptosService.saveConcepto(catalogoConceptosMapper.toCatalogoConceptosEntity(catalogoConceptosDTO));
             if (saveCatalogo != null) {
                 response.put("message", "Gasto almacenado con exito");
-                response.put("data", catalogoConceptosDTO);
+                response.put("data", saveCatalogo);
                 response.put("status", HttpStatus.CREATED.value());
                 response.put("error", false);
                 return ResponseEntity.status(HttpStatus.CREATED).body(response);

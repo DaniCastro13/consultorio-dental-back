@@ -28,13 +28,13 @@ public class Gastos {
     @Column(name = "IMPORTE")
     private Double importe;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_CAT_GASTO")
-    private CatalogoConceptos catalogoConceptos;
-
     @Column(name = "JUSTIFICACION_GASTO")
     private String justificacionGasto;
 
     @Column(name = "OBSERVACIONES")
     private String observaciones;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_CAT_GASTO")
+    private CatalogoConceptos catalogoConceptos;
 }
