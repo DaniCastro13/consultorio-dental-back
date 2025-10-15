@@ -18,7 +18,7 @@ public class ConsultasDTO {
     private Double estatura;
     private String padecimiento;
     private String observaciones;
-    private Citas cita;
+    private CitasDTO cita;
     private List<CatalogoProcedimientosDTO> catalogoProcedimientos;
     private List<HallazgosDTO> hallazgos;
 }
