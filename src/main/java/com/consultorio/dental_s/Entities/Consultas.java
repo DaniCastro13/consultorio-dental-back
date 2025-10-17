@@ -1,5 +1,6 @@
 package com.consultorio.dental_s.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,10 +36,12 @@ public class Consultas {
     private String observaciones;
 
     @OneToOne
+    @JsonBackReference
     @JoinColumn(name = "ID_CITA")
     private Citas cita;
 
     @ManyToMany
+    @JsonBackReference
     @JoinTable(
             name = "CONSULTA_PROCEDIMIENTOS",
             joinColumns = @JoinColumn(name = "ID_CONSULTA"),
@@ -47,6 +50,7 @@ public class Consultas {
     private List<CatalogoProcedimientos> catalogoProcedimientos;
 
     @ManyToMany
+    @JsonBackReference
     @JoinTable(
             name = "CONSULTA_HALLAZGOS",
             joinColumns = @JoinColumn(name = "ID_CONSULTA"),
